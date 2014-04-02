@@ -19,7 +19,7 @@ public class Scene extends Entity {
 		loadTiles();
 		this.setGraphicalComponent(new SceneRender(this));
 		characters = new HashSet<>();
-		addCharacter(new Character(new Rectangle(20, 120, 70, 70), this));
+		addCharacter(new Character(new Rectangle(220, 100, Tile.SIZE*2, Tile.SIZE*3), this));
 	}
 	
 	private void addCharacter(Character character) {
