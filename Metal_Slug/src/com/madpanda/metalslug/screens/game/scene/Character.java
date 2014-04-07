@@ -19,7 +19,7 @@ public class Character extends Entity {
 		MovingBody body = (MovingBody) this.getPhysicalComponent();
 		
 		body.setSpeed(new Vector2(0, 0));
-		body.setAcceleration(new Vector2(0, -200));
+		//body.setAcceleration(new Vector2(0, -200));
 	}
 
 	public class CharacterInput extends InputComponent {

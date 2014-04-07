@@ -23,7 +23,7 @@ public class CharacterPhysics extends MovingBody {
 			boolean foundObstacle = false;
 			for(int i = lowerRight[0]; i < scene.getColumnCount() && !foundObstacle; i++) {
 				for(int j = lowerRight[1]; j < upperRight[1] && !foundObstacle; j++) {
-					if(scene.getTile(i, j).isObstacle()) {
+					if(scene.getTile(j, i).isObstacle()) {
 						if(i*Tile.SIZE - getRectangle().x - getRectangle().width < vector.x) {
 							vector.x = i*Tile.SIZE - getRectangle().x - getRectangle().width;
 							foundObstacle = true;
@@ -37,10 +37,10 @@ public class CharacterPhysics extends MovingBody {
 			boolean foundObstacle = false;
 			for(int i = lowerLeft[0]; i >= 0 && !foundObstacle; i--) {
 				for(int j = lowerLeft[1]; j < upperLeft[1] && !foundObstacle; j++) {
-					if(scene.getTile(i, j).isObstacle()) {
-						if((i+2)*Tile.SIZE - getRectangle().x > vector.x) {
+					if(scene.getTile(j, i).isObstacle()) {
+						if((i+1)*Tile.SIZE - getRectangle().x > vector.x) {
 							foundObstacle = true;
-							vector.x = (i+2)*Tile.SIZE - getRectangle().x; 
+							vector.x = (i+1)*Tile.SIZE - getRectangle().x; 
 						}
 					}
 				}
@@ -55,10 +55,10 @@ public class CharacterPhysics extends MovingBody {
 			boolean foundObstacle = false;
 			for(int i = upperLeft[1]; i < scene.getRowCount() && !foundObstacle; i++) {
 				for(int j = upperLeft[0]; j < upperRight[0] && !foundObstacle; j++) {
-					if(scene.getTile(j, i).isObstacle()) {
-						if(j*Tile.SIZE - getRectangle().y - getRectangle().height < vector.y) {
+					if(scene.getTile(i, j).isObstacle()) {
+						if(i*Tile.SIZE - getRectangle().y - getRectangle().height < vector.y) {
 							System.out.println("COLLISION");
-							vector.y = j*Tile.SIZE - getRectangle().y - getRectangle().height;
+							vector.y = i*Tile.SIZE - getRectangle().y - getRectangle().height;
 							foundObstacle = true;
 							getSpeed().y = 0;
 						}
@@ -72,8 +72,8 @@ public class CharacterPhysics extends MovingBody {
 			for(int i = lowerLeft[1]; i >= 0 && !foundObstacle; i--) {
 				for(int j = lowerLeft[0]; j < lowerRight[0] && !foundObstacle; j++) {
 					if(scene.getTile(j, i).isObstacle()) {
-						if((j+2)*Tile.SIZE - getRectangle().y > vector.y) {
-							vector.y = (j+2)*Tile.SIZE - getRectangle().y;
+						if((i+1)*Tile.SIZE - getRectangle().y > vector.y) {
+							vector.y = (i+1)*Tile.SIZE - getRectangle().y;
 							foundObstacle = true;
 							getSpeed().y = 0;
 						}

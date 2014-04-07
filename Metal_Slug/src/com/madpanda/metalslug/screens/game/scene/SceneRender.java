@@ -16,7 +16,7 @@ public class SceneRender extends GraphicalComponent {
 		for(int i = 0; i < scene.getRowCount(); i++) {
 			for(int j = 0; j < scene.getColumnCount(); j++) {
 				RenderWithOffset render = (RenderWithOffset) scene.getTile(i, j).getGraphicalComponent(); 
-				render.render(batch, new Vector2(i * Tile.SIZE, j * Tile.SIZE));
+				render.render(batch, new Vector2(j * Tile.SIZE, i * Tile.SIZE));
 			}
 		}
 		for(Character character : scene.getCharacters()) {
