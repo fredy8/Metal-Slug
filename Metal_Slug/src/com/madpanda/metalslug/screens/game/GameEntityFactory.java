@@ -18,7 +18,8 @@ public class GameEntityFactory {
 			
 			for(int i = 0; i < tiles.length; i++) {
 				for(int j = 0; j < tiles[i].length; j++) {
-					tiles[tiles.length - 1 - i][j] = new Tile(scanner.nextInt() == 1);
+					int type = scanner.nextInt();
+					tiles[tiles.length - 1 - i][j] = new Tile((type & 1) != 0, (type & 3) != 0);
 				}
 			}
 		}

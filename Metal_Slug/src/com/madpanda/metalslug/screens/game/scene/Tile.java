@@ -13,21 +13,26 @@ import com.madpanda.metalslug.screens.game.components.graphical.RenderWithOffset
 public class Tile extends Entity {
 
 	public static final int SIZE = 15;
-	private boolean isObstacle;
+	private boolean obstacleX, obstacleY;
 	
-	public static final Tile NullTile = new Tile(false); //TODO change to ImmutableTile
+	public static final Tile NullTile = new Tile(false, false); //TODO change to ImmutableTile
 	
-	public Tile(boolean isObstacle) {
-		this.isObstacle = isObstacle;
+	public Tile(boolean obstacleX, boolean obstacleY) {
+		this.obstacleX = obstacleX;
+		this.obstacleY = obstacleY;
 		this.setGraphicalComponent(new ObstacleView(this));
 	}
 	
 	public Tile(Sprite sprite) {
-		this(false);
+		this(false, false);
 	}
 	
-	public boolean isObstacle() {
-		return isObstacle;
+	public boolean isObstacleX() {
+		return obstacleX;
+	}
+	
+	public boolean isObstacleY() {
+		return obstacleY;
 	}
 	
 	public static class ObstacleView extends RenderWithOffset {
@@ -38,7 +43,7 @@ public class Tile extends Entity {
 
 		@Override
 		public void render(SpriteBatch batch, Vector2 offset) {
-			if (!((Tile) this.getEntity()).isObstacle) {
+			if (!((Tile) this.getEntity()).isObstacleX() && !((Tile) this.getEntity()).isObstacleY()) {
 				ShapeRenderer renderer = GameScreen.getShapeRenderer();
 				renderer.setColor(Color.RED);
 				renderer.begin(ShapeType.Filled);

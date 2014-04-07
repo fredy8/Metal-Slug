@@ -33,20 +33,17 @@ public class Character extends Entity {
 			Character character = (Character) getEntity();
 			MovingBody body = (MovingBody) character.getPhysicalComponent();
 			switch (keycode) {
-			case Input.Keys.SPACE:
-				body.getSpeed().y = 170;
-				return true;
 			case Input.Keys.W:
-				body.getSpeed().y+=5;
+				body.setSpeed(new Vector2(0, 200));
 				return true;
 			case Input.Keys.S:
-				body.getSpeed().y-=5;
+				body.setSpeed(new Vector2(0, -200));
 				return true;
 			case Input.Keys.A:
-				body.getSpeed().x-=5;
+				body.setSpeed(new Vector2(-200, 0));
 				return true;
 			case Input.Keys.D:
-				body.getSpeed().x+=5;
+				body.setSpeed(new Vector2(200, 0));
 				return true;
 			}
 			return false;
