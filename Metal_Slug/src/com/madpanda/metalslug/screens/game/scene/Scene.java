@@ -12,11 +12,10 @@ public class Scene extends Entity {
 	private final int rows, columns;
 	private Set<Character> characters;
 	
-	public Scene(int rows, int columns) {
-		tiles = new Tile[rows][columns];
-		this.rows = rows;
-		this.columns = columns;
-		loadTiles();
+	public Scene(Tile[][] tiles) {
+		this.tiles = tiles;
+		this.rows = tiles.length;
+		this.columns = tiles[0].length;
 		this.setGraphicalComponent(new SceneRender(this));
 		characters = new HashSet<>();
 		addCharacter(new Character(new Rectangle(220, 100, Tile.SIZE*2, Tile.SIZE*3), this));
@@ -30,19 +29,6 @@ public class Scene extends Entity {
 	private void removeCharacter(Character character) {
 		removeChild(character);
 		characters.remove(character);
-	}
-	
-	private void loadTiles() {
-		for(int i = 0; i < rows; i++) {
-			for(int j = 0; j < columns; j++) {
-				if(i != j) {
-					tiles[i][j] = Tile.NullTile;
-				}
-			}
-		}
-		for(int i = 0; i < rows; i++) {
-			tiles[i][i] = new Tile(true);
-		}
 	}
 
 	public int getRowCount() {
