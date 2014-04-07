@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -22,23 +23,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.madpanda.metalslug.App;
 import com.madpanda.metalslug.TweenAccessors.ActorAccessor;
-import com.madpanda.metalslug.screens.game.GameScreen;
 
-public class MainMenuScreen extends AbstractScreen {
+public class OptionsScreen extends AbstractScreen {
 	
 	private Stage stage;
 	private TextureAtlas atlas;
 	
 	private Skin skin;
 	private Table table;
-	private TextButton buttonPlay, buttonOptions;// buttonHighscore, buttonAchievements;
+	private TextButton buttonVSync, buttonBack;// buttonHighscore, buttonAchievements;
 	private BitmapFont minecrafter, minecraftia;
 	private Label heading;
 	private TweenManager tweenManager;
+	private Preferences prefs = Gdx.app.getPreferences("myPreferences");
+	private boolean vsync;
 //	private Texture texture;
 	
+	
 
-	public MainMenuScreen() {
+	public OptionsScreen() {
 		stage = new Stage();
 		
 		Gdx.input.setInputProcessor(stage);
@@ -56,6 +59,8 @@ public class MainMenuScreen extends AbstractScreen {
 		minecraftia = new BitmapFont(Gdx.files.internal("menu/fonts/minecraftia.fnt"));
 //		minecraftia.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		
+		//Preferences loading
+		vsync = prefs.getBoolean("vsync");
 		
 		//creating textbuttonstyle
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -67,34 +72,33 @@ public class MainMenuScreen extends AbstractScreen {
 		textButtonStyle.font.setScale(2f);
 		
 		//creating playbutton
-		buttonPlay = new TextButton("Play", textButtonStyle);
-		buttonPlay.addListener(new ClickListener(){
+		buttonVSync = new TextButton("V-Sync", textButtonStyle);
+		buttonVSync.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.log("START", "Starting...");
-				MainMenuScreen.this.dispose();
-				((App) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
+				Gdx.app.log("V-Sync", "acting...");
+				Gdx.graphics.setVSync(!vsync);//probablemente no jale con iOS
 			}
 		});
-		buttonPlay.pad(20);
+		buttonVSync.pad(20);
 		
-		buttonOptions = new TextButton("Options", textButtonStyle);
-		buttonOptions.addListener(new ClickListener(){
+		buttonBack = new TextButton("Back", textButtonStyle);
+		buttonBack.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.log("OPTIONS", "Options...");
-//				MainMenuScreen.this.dispose();
-				((App) Gdx.app.getApplicationListener()).setScreen(new OptionsScreen());
+//				OptionsScreen.this.dispose();
+				((App) Gdx.app.getApplicationListener()).setScreen(new MainMenuScreen());
 			}
 		});
-		buttonOptions.pad(20);
+		buttonBack.pad(20);
 		
 		
 		//creating heading
 		LabelStyle headingStyle = new LabelStyle(minecrafter, Color.WHITE);
-		heading = new Label("INSERT NaME HERE", headingStyle);
+		heading = new Label("Options", headingStyle);
 		
-		heading.setFontScale(3f);
+		heading.setFontScale(2.5f);
 		
 		//creating sprite
 //		texture = new Texture("player/character2.png");
@@ -106,11 +110,11 @@ public class MainMenuScreen extends AbstractScreen {
 //		table.row();
 		table.add(heading).spaceBottom(25);
 		table.row();
-		table.add(buttonPlay).size(160, 40);
-		table.getCell(buttonPlay).spaceBottom(13);
+		table.add(buttonVSync).size(160, 40).left();
+		table.getCell(buttonVSync).spaceBottom(13);
 		table.row();
-		table.add(buttonOptions).size(160, 40);
-		table.getCell(buttonOptions).spaceBottom(13);
+		table.add(buttonBack).size(160, 40).left();
+		table.getCell(buttonBack).spaceBottom(13);
 		table.row();
 		table.debug();//debug
 		stage.addActor(table);
@@ -127,14 +131,14 @@ public class MainMenuScreen extends AbstractScreen {
 //			.end().repeat(Tween.INFINITY, 0).start(tweenManager);
 		
 		Timeline.createSequence().beginSequence()
-			.push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
-			.push(Tween.set(buttonOptions, ActorAccessor.ALPHA).target(0))
+			.push(Tween.set(buttonVSync, ActorAccessor.ALPHA).target(0))
+			.push(Tween.set(buttonBack, ActorAccessor.ALPHA).target(0))
 			.beginParallel()
 			.push(Tween.from(heading, ActorAccessor.ALPHA, 1f).target(0))
 			.pushPause(350)
-			.push(Tween.to(buttonPlay, ActorAccessor.ALPHA, 1f).target(1))
+			.push(Tween.to(buttonVSync, ActorAccessor.ALPHA, 1f).target(1))
 			.pushPause(350)
-			.push(Tween.to(buttonOptions, ActorAccessor.ALPHA, 1f).target(1))
+			.push(Tween.to(buttonBack, ActorAccessor.ALPHA, 1f).target(1))
 			.pushPause(350)
 			.end()
 			.end().start(tweenManager);

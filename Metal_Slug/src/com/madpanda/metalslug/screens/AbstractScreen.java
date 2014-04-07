@@ -17,7 +17,7 @@ public class AbstractScreen implements Screen, InputProcessor {
 	public AbstractScreen() {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 320, 568);
+		camera.setToOrtho(false, 568, 320);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 	}
 	
