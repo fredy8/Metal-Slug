@@ -19,25 +19,33 @@ public class SceneRender extends GraphicalComponent {
 	public SceneRender(Scene scene) {
 		super(scene);
 	}
-
+	
 	/**
-	 * Renders the tiles and the characters of the scene.
+	 * Renders the characters of the scene.
 	 */
 	public void render(SpriteBatch batch) {
+		Scene scene = (Scene) getEntity();
+				
+		//render each character
+		for(Character character : scene.getCharacters()) {
+			character.getGraphicalComponent().render(batch);
+		}
+	}
+	
+	/**
+	 * Renders the tiles of the scene.
+	 */
+	public void renderShapes() {
 		Scene scene = (Scene) getEntity();
 		
 		//render each tile.
 		for(int i = 0; i < scene.getRowCount(); i++) {
 			for(int j = 0; j < scene.getColumnCount(); j++) {
 				RenderWithOffset render = (RenderWithOffset) scene.getTile(i, j).getGraphicalComponent(); 
-				render.render(batch, new Vector2(j * Tile.SIZE, i * Tile.SIZE));
+				render.renderShapes(new Vector2(j * Tile.SIZE, i * Tile.SIZE));
 			}
 		}
 		
-		//render each character
-		for(Character character : scene.getCharacters()) {
-			character.getGraphicalComponent().render(batch);
-		}
 	}
 
 }

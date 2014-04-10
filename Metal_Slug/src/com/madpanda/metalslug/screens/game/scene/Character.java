@@ -1,10 +1,10 @@
 package com.madpanda.metalslug.screens.game.scene;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.madpanda.metalslug.screens.game.Entity;
-import com.madpanda.metalslug.screens.game.components.graphical.BodyRender;
+import com.madpanda.metalslug.screens.game.components.graphical.AnimationRender;
+import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
 import com.madpanda.metalslug.screens.game.components.physical.Body;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
 
@@ -16,6 +16,8 @@ public class Character extends Entity {
 
 	private static final Vector2 JUMP = new Vector2(0, 200); //The jumping speed
 	private CharacterState state; //the state in which the character is
+	private AnimationRender moveAnimation; //the move animation
+	private TextureRender standingTexture; //the standing texture
 	
 	/**
 	 * Creates a new character given its bounds and the scene in which it is created.
@@ -26,7 +28,10 @@ public class Character extends Entity {
 		//set its physical component to the character physics component
 		this.setPhysicalComponent(new CharacterPhysics(this, rectangle, scene, new CharacterCollisionHandler(this)));
 		//for debugging, the graphical component is set to rendering the body's shape.
-		this.setGraphicalComponent(new BodyRender(this, Color.BLUE));
+		
+		//FOR DEBUGGING:
+		//this.setGraphicalComponent(new BodyRender(this, Color.BLUE));
+		
 		MovingBody body = (MovingBody) this.getPhysicalComponent();
 		
 		//sets its speed and acceleration
@@ -100,6 +105,7 @@ public class Character extends Entity {
 	 * Makes the player move to the right until stopped.
 	 */
 	public void moveRight() {
+		setGraphicalComponent(moveAnimation);
 		MovingBody body = (MovingBody) getPhysicalComponent();
 		body.getSpeed().x = 200;
 	}
@@ -108,6 +114,7 @@ public class Character extends Entity {
 	 * Makes the player move to the left until stopped.
 	 */
 	public void moveLeft() {
+		setGraphicalComponent(moveAnimation);
 		MovingBody body = (MovingBody) getPhysicalComponent();
 		body.getSpeed().x = -200;
 	}
@@ -116,8 +123,25 @@ public class Character extends Entity {
 	 * Stops the player horizontal movement.
 	 */
 	public void stopMovement() {
+		setGraphicalComponent(standingTexture);
 		MovingBody body = (MovingBody) getPhysicalComponent();
 		body.getSpeed().x = 0;
+	}
+
+	/**
+	 * Sets the standing texture to a texture graphical component
+	 * @param animationRender - The standing texture
+	 */
+	public void setStandingTexture(TextureRender textureRender) {
+		standingTexture = textureRender;
+	}
+	
+	/**
+	 * Sets the move animation to an animation graphical component
+	 * @param animationRender - The movement animation
+	 */
+	public void setMoveAnimation(AnimationRender animationRender) {
+		moveAnimation = animationRender;
 	}
 	
 	

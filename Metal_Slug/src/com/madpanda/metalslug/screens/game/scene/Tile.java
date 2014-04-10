@@ -57,7 +57,10 @@ public class Tile extends Entity {
 		 * The tile is rendered black if it is an obstacle, red otherwise.
 		 */
 		@Override
-		public void render(SpriteBatch batch, Vector2 offset) {
+		public void render(SpriteBatch batch, Vector2 offset) { }
+
+		@Override
+		public void renderShapes(Vector2 offset) {
 			if (!((Tile) this.getEntity()).isObstacleX() && !((Tile) this.getEntity()).isObstacleY()) {
 				ShapeRenderer renderer = GameScreen.getShapeRenderer();
 				renderer.setColor(Color.RED);

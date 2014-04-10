@@ -31,4 +31,9 @@ public class GameScreen extends AbstractScreen {
 		game.getGraphicalComponent().render(batch); //renders the game
 	}
 	
+	@Override
+	public void renderShapes() {
+		game.getGraphicalComponent().renderShapes(); //renders the game shapes
+	}
+	
 }

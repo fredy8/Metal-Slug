@@ -1,11 +1,16 @@
 package com.madpanda.metalslug.screens.game.scene;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.madpanda.metalslug.screens.game.Entity;
+import com.madpanda.metalslug.screens.game.components.graphical.AnimationRender;
+import com.madpanda.metalslug.screens.game.components.graphical.GraphicalComponent;
+import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
 
 /**
  * A scene in a game.
@@ -32,7 +37,15 @@ public class Scene extends Entity {
 		characters = new HashSet<>();
 		
 		//creates the player character
-		player = new Character(new Rectangle(220, 100, Tile.SIZE*2, Tile.SIZE*3), this);
+		Rectangle rect = new Rectangle(220, 100, Tile.SIZE*2, Tile.SIZE*3);
+		player = new Character(rect, this);
+		List<String> playerFrames = new ArrayList<>();
+		for(int i = 1; i < 9; i++) {
+			playerFrames.add("images/game/bueno" + i + ".png");
+		}
+		player.setMoveAnimation(new AnimationRender(player, rect, playerFrames));
+		player.setGraphicalComponent(new TextureRender(player, rect, "images/game/bueno9.png"));
+		player.setStandingTexture((TextureRender) player.getGraphicalComponent());
 		
 		//make the camera follow the player
 		this.setPhysicalComponent(new CameraLockTarget(camera, this, new Rectangle(camera.viewportWidth/4, camera.viewportHeight/4, camera.viewportWidth/2, camera.viewportHeight/2)));
@@ -91,5 +104,6 @@ public class Scene extends Entity {
 	public Character getPlayer() {
 		return player;
 	}
+	
 	
 }

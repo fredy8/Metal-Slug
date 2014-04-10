@@ -29,4 +29,14 @@ public class GraphicalComponent extends Component {
 		}
 	}
 
+	/**
+	 * By default, the entity will delegate the render shape callbacks to its children.
+	 */
+	public void renderShapes() {
+		//renders the entities' children.
+		for(Entity entity : getEntity().getChildren()) {
+			entity.getGraphicalComponent().renderShapes();
+		}
+	}
+
 }

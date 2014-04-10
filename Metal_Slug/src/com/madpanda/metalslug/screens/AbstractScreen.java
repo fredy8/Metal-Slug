@@ -37,6 +37,11 @@ public class AbstractScreen implements Screen, InputProcessor {
 	 */
 	public void render(SpriteBatch batch) { }
 	
+	/**
+	 * Called every frame and used to draw shapes to the screen
+	 */
+	public void renderShapes() { }
+	
 	@Override
 	public final void render(float delta) {
 		update(); //update before rendering
@@ -46,6 +51,8 @@ public class AbstractScreen implements Screen, InputProcessor {
 		//applies the camera to the batch and the shape renderer
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
+		
+		renderShapes();
 		
 		//renders the batch
 		batch.begin();

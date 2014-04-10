@@ -32,5 +32,19 @@ public abstract class RenderWithOffset extends GraphicalComponent {
 	 * @param offset - The offset for drawing the entity.
 	 */
 	public abstract void render(SpriteBatch batch, Vector2 offset);
+	
+	/**
+	 * The default render method will render the entity shapes with no offset
+	 */
+	@Override
+	public void renderShapes() {
+		renderShapes(Vector2.Zero);
+	}
+	
+	/**
+	 * Defines a render method for shapes with an offset.
+	 * @param offset - The offset for drawing the entity.
+	 */
+	public abstract void renderShapes(Vector2 offset);
 
 }
