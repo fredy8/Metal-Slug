@@ -7,8 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class ActorAccessor implements TweenAccessor<Actor>{
 
 	public static final int Y=0, RGB=1, ALPHA =2;
-	//WTH
-	
+	/**
+	 * Handles TweenAnimations for actors.
+	 *
+	 */
 	@Override
 	public int getValues(Actor target, int tweenType, float[] returnValues) {
 		switch(tweenType){
