@@ -7,14 +7,24 @@ import com.madpanda.metalslug.screens.game.components.graphical.GraphicalCompone
 import com.madpanda.metalslug.screens.game.components.input.InputComponent;
 import com.madpanda.metalslug.screens.game.components.physical.PhysicalComponent;
 
+/**
+ * The main unit of the game.
+ * An entity can contain child entities.
+ * Every entity has a physical, graphical and input component.
+ *
+ */
 public class Entity {
 
+	//the entity components
 	private PhysicalComponent physicalComponent;
 	private GraphicalComponent graphicalComponent;
 	private InputComponent inputComponent;
 	
-	private Set<Entity> children;
+	private Set<Entity> children; //the child entities
 	
+	/**
+	 * Creates a new entity and initializes its components.
+	 */
 	public Entity() {
 		children = new HashSet<>();
 		physicalComponent = new PhysicalComponent(this);
@@ -22,12 +32,23 @@ public class Entity {
 		inputComponent = new InputComponent(this);
 	}
 	
+	/**
+	 * Adds a child entity to this entity.
+	 * By default, the components in this entity will call the corresponding methods to the child entities.
+	 * @param entity - The entity to be added as a child.
+	 */
 	public void addChild(Entity entity) {
 		children.add(entity);
 	}
 	
+	/**
+	 * Removes a child from this entity if the entity is a child of this entity
+	 * @param entity - The entity to be removed.
+	 */
 	public void removeChild(Entity entity) {
-		children.remove(entity);
+		if(children.contains(entity)) {
+			children.remove(entity);
+		}
 	}
 
 	public Set<Entity> getChildren() {

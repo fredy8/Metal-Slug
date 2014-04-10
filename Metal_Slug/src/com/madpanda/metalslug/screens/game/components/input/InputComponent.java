@@ -4,8 +4,18 @@ import com.badlogic.gdx.InputProcessor;
 import com.madpanda.metalslug.screens.game.Entity;
 import com.madpanda.metalslug.screens.game.components.Component;
 
+/**
+ * The input component for defining the processing of the input for the entity.
+ * By default, the entity will delegate the all input callbacks to its children.
+ * Each callback returns true if the input was processed, if so, the callback will not be delegated to
+ * its children.
+ */
 public class InputComponent extends Component implements InputProcessor {
 
+	/**
+	 * Created a new InputComponent given the containing entity.
+	 * @param entity - The containing entity.
+	 */
 	public InputComponent(Entity entity) {
 		super(entity);
 	}
