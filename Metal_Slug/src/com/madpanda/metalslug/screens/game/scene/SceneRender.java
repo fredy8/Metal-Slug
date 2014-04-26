@@ -30,6 +30,8 @@ public class SceneRender extends GraphicalComponent {
 		for(Character character : scene.getCharacters()) {
 			character.getGraphicalComponent().render(batch);
 		}
+		
+		super.render(batch);
 	}
 	
 	/**
@@ -45,7 +47,8 @@ public class SceneRender extends GraphicalComponent {
 				render.renderShapes(new Vector2(j * Tile.SIZE, i * Tile.SIZE));
 			}
 		}
-		
+	
+		super.renderShapes();		
 	}
 
 }

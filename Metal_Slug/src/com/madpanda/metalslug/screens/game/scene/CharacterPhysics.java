@@ -12,6 +12,9 @@ import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
  */
 public class CharacterPhysics extends MovingBody {
 
+	private static final Vector2 JUMP = new Vector2(0, 200); //The jumping speed
+	private static final Vector2 GRAVITY = new Vector2(0, -300); //the gravity vector
+	private static final float RUNNING_SPEED = 200; //the gravity vector
 	private Scene scene; //The scene that contains the character
 	private CollisionHandler collisionHandler; //The collision handler for the character
 	
@@ -27,9 +30,39 @@ public class CharacterPhysics extends MovingBody {
 		super(entity, rectangle);
 		this.scene = scene;
 		this.collisionHandler = collisionHandler;
+		initPhysics();
+	}
+	
+	//defines the character physics
+	private void initPhysics() {
+		setSpeed(new Vector2(0, 0));
+		setAcceleration(GRAVITY);
 	}
 	
 	/**
+	 * Makes the character jump by adding speed in the positive y direction.
+	 */
+	public void jump() {
+		setSpeed(getSpeed().add(JUMP));
+	}
+	
+	/**
+	 * Makes the character stand by setting the vertical speed to zero.
+	 */
+	public void stand() {
+		getSpeed().y = 0;
+	}
+	
+	public void runRight() {
+		getSpeed().x = RUNNING_SPEED;
+	}
+	
+	public void runLeft() {
+		getSpeed().x = -RUNNING_SPEED;
+	}
+	
+	/**
+	 * Moves the physical component of the character by the given vector.
 	 * Changes the behavior for moving the body of the character so that collisions are checked
 	 * before moving and the position is adjusted accordingly. 
 	 */

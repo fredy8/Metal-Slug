@@ -3,13 +3,13 @@ package com.madpanda.metalslug.screens.game.scene;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
-import com.madpanda.metalslug.screens.game.components.physical.PhysicalComponent;
+import com.madpanda.metalslug.screens.game.components.physical.UpdateComponent;
 
 /**
  * A physical component for moving a camera to follow a moving body.
  *
  */
-public class CameraLockTarget extends PhysicalComponent {
+public class CameraLockTarget extends UpdateComponent {
 
 	private MovingBody body; //The body to be followed.
 	private OrthographicCamera camera; //The camera to be moved.

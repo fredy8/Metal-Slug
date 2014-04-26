@@ -3,6 +3,7 @@ package com.madpanda.metalslug.screens.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.madpanda.metalslug.screens.AbstractScreen;
+import com.madpanda.metalslug.screens.game.scene.Scene;
 
 /**
  * The game screen.
@@ -11,29 +12,40 @@ import com.madpanda.metalslug.screens.AbstractScreen;
  */
 public class GameScreen extends AbstractScreen {
 
-	private MetalSlug game; //The game instance
+	private static GameScreen instance; //The game instance
+	
+	private Scene currentScene;
 	
 	/**
 	 * Initializes the game and the initial scene.
 	 */
 	public GameScreen() {
-		game = new MetalSlug(GameEntityFactory.createScene(1, getCamera()));
-		Gdx.input.setInputProcessor(game.getInputComponent()); //sets the input of the screen to the game
+		setScene(GameEntityFactory.createScene(1, getCamera()));
+		Gdx.input.setInputProcessor(this); //sets the input of the screen to the game
 	}
 
 	@Override
 	public void update() {
-		game.getPhysicalComponent().update(); //updates the game
+		//keyDownCheck();
+		//update(); //updates the game
 	}
 	
 	@Override
 	public void render(SpriteBatch batch) {
-		game.getGraphicalComponent().render(batch); //renders the game
+		//render(batch); //renders the game
 	}
 	
 	@Override
 	public void renderShapes() {
-		game.getGraphicalComponent().renderShapes(); //renders the game shapes
+		//renderShapes(); //renders the game shapes
+	}
+	
+	public void setScene(Scene scene) {
+		currentScene = scene;
+	}
+	
+	public static GameScreen getInstance() {
+		return instance;
 	}
 	
 }

@@ -1,6 +1,6 @@
 package com.madpanda.metalslug.screens.game.scene;
 
-import com.madpanda.metalslug.screens.game.scene.Character.CharacterState;
+import com.madpanda.metalslug.screens.game.scene.Character.MovementState;
 import com.madpanda.metalslug.screens.game.scene.CharacterPhysics.AbstractCollisionHandler;
 
 /**
@@ -24,7 +24,7 @@ public class CharacterCollisionHandler extends AbstractCollisionHandler {
 	 */
 	@Override
 	public void onDownCollision(Tile tile) {
-		if(character.getState() == CharacterState.Jumping) {
+		if(character.getState() == MovementState.Jumping) {
 			character.stand();
 		}
 	}

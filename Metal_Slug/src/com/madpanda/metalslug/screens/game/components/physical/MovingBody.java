@@ -32,6 +32,7 @@ public class MovingBody extends Body {
 		float dt = Gdx.graphics.getDeltaTime(); //the time elapsed from the last frame.
 		move(new Vector2(speed.cpy().scl(dt))); //move the body.
 		speed.add(acceleration.cpy().scl(dt)); //update the speed.
+		super.update();
 	}
 
 	/**

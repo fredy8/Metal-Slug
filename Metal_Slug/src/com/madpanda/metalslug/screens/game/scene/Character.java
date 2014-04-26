@@ -2,6 +2,8 @@ package com.madpanda.metalslug.screens.game.scene;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.madpanda.metalslug.screens.game.Entity;
 import com.madpanda.metalslug.screens.game.components.graphical.AnimationRender;
 import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
@@ -14,11 +16,16 @@ import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
  */
 public class Character extends Entity {
 
-	private static final Vector2 JUMP = new Vector2(0, 200); //The jumping speed
-	private CharacterState state; //the state in which the character is
+	private static final float SHOOT_DELAY = .15f;
+	
+	private MovementState movementState; //the state in which the character is
+	private HorizontalFacingDirection horizontalFacingDirection; //the direction towards which the player is facing horizontally
+	private VerticalFacingDirection verticalFacingDirection; //the direction towards which the player is facing vertically
 	private AnimationRender moveAnimation; //the move animation
 	private TextureRender standingTexture; //the standing texture
-	
+	private boolean canShoot;
+	private Timer enableShoot = new Timer();
+		
 	/**
 	 * Creates a new character given its bounds and the scene in which it is created.
 	 * @param rectangle - The bounds of the character
@@ -26,21 +33,14 @@ public class Character extends Entity {
 	 */
 	public Character(Rectangle rectangle, Scene scene) {
 		//set its physical component to the character physics component
-		this.setPhysicalComponent(new CharacterPhysics(this, rectangle, scene, new CharacterCollisionHandler(this)));
+		this.setUpdateComponent(new CharacterPhysics(this, rectangle, scene, new CharacterCollisionHandler(this)));
 		//for debugging, the graphical component is set to rendering the body's shape.
 		
-		//FOR DEBUGGING:
-		//this.setGraphicalComponent(new BodyRender(this, Color.BLUE));
-		
-		MovingBody body = (MovingBody) this.getPhysicalComponent();
-		
-		//sets its speed and acceleration
-		//TODO - this should be defined in the CharacterPhysics.
-		body.setSpeed(new Vector2(0, 0));
-		body.setAcceleration(new Vector2(0, -200));
-		
 		//by default, its state is jumping as it can be created in midair, its state will change to standing if it touches the floor.
-		state = CharacterState.Jumping;
+		movementState = MovementState.Jumping;
+		horizontalFacingDirection = HorizontalFacingDirection.Right;
+		verticalFacingDirection = VerticalFacingDirection.None;
+		canShoot = true;
 	}
 	
 	/**
@@ -48,10 +48,10 @@ public class Character extends Entity {
 	 * Can only jump when standing.
 	 */
 	public void jump() {
-		if(state == CharacterState.Standing) {
-			MovingBody body = (MovingBody) getPhysicalComponent();
-			body.setSpeed(body.getSpeed().add(JUMP));
-			state = CharacterState.Jumping; //set the state to jumping
+		if(movementState == MovementState.Standing) {
+			getPhysics().jump();
+			movementState = MovementState.Jumping; //set the state to jumping
+			setGraphicalComponent(standingTexture);
 		}
 	}
 	
@@ -60,15 +60,17 @@ public class Character extends Entity {
 	 * Can only stand when in jumping state or when crouching.
 	 */
 	public void stand() {
-		if(state == CharacterState.Jumping) {
-			MovingBody body = (MovingBody) getPhysicalComponent();
-			body.getSpeed().y = 0;
-			state = CharacterState.Standing;
-		} else if(state == CharacterState.Crouching) {
+		if(movementState == MovementState.Jumping) {
+			getPhysics().stand();
+			movementState = MovementState.Standing;
+			if(Math.abs(getPhysics().getSpeed().x) > 0) {
+				setGraphicalComponent(moveAnimation);
+			}
+		} else if(movementState == MovementState.Crouching) {
 			Body body = (Body) getPhysicalComponent();
 			//stop crouching.
 			body.getRectangle().setHeight(body.getRectangle().getHeight()*2);
-			state = CharacterState.Standing;
+			movementState = MovementState.Standing;
 		}
 	}
 	
@@ -77,46 +79,82 @@ public class Character extends Entity {
 	 * Can only crouch when standing.
 	 */
 	public void crouch() {
-		if(state == CharacterState.Standing) {
+		if(movementState == MovementState.Standing) {
 			Body body = (Body) getPhysicalComponent();
 			//Makes the character crouch
 			body.getRectangle().setHeight(body.getRectangle().getHeight()/2);
-			state = CharacterState.Crouching;
+			movementState = MovementState.Crouching;
 		}
 	}
 
 	/**
-	 * The possible states of the character.
+	 * The possible movement states of the character.
 	 *
 	 */
-	public enum CharacterState {
+	public enum MovementState {
 		Standing, Jumping, Crouching;
+	}
+	
+	/**
+	 * The possible horizontal facing directions of the character
+	 */
+	public enum HorizontalFacingDirection {
+		Right, Left
+	}
+	
+	/**
+	 * The possible vertical facing directions of the character
+	 */
+	public enum VerticalFacingDirection {
+		Up, Down, None
+	}
+	
+	public void lookUp() {
+		if(verticalFacingDirection == VerticalFacingDirection.None) {
+			verticalFacingDirection = VerticalFacingDirection.Up;
+		}
+	}
+	
+	public void lookDown() {
+		if(verticalFacingDirection == VerticalFacingDirection.None) {
+			verticalFacingDirection = VerticalFacingDirection.Down;
+		}
+	}
+	
+	public void stopLook() {
+		if(verticalFacingDirection != VerticalFacingDirection.None) {
+			verticalFacingDirection = VerticalFacingDirection.None;
+		}
 	}
 	
 	/**
 	 * Returns the current state of the character
 	 * @return - The current state of the character
 	 */
-	public CharacterState getState() {
-		return state;
+	public MovementState getState() {
+		return movementState;
 	}
 
 	/**
 	 * Makes the player move to the right until stopped.
 	 */
 	public void moveRight() {
-		setGraphicalComponent(moveAnimation);
-		MovingBody body = (MovingBody) getPhysicalComponent();
-		body.getSpeed().x = 200;
+		if(movementState == MovementState.Standing) {
+			setGraphicalComponent(moveAnimation);
+		}
+		getPhysics().runRight();
+		horizontalFacingDirection = HorizontalFacingDirection.Right;
 	}
 	
 	/**
 	 * Makes the player move to the left until stopped.
 	 */
 	public void moveLeft() {
-		setGraphicalComponent(moveAnimation);
-		MovingBody body = (MovingBody) getPhysicalComponent();
-		body.getSpeed().x = -200;
+		if(movementState == MovementState.Standing) {
+			setGraphicalComponent(moveAnimation);
+		}
+		getPhysics().runLeft();
+		horizontalFacingDirection = HorizontalFacingDirection.Left;
 	}
 
 	/**
@@ -144,5 +182,56 @@ public class Character extends Entity {
 		moveAnimation = animationRender;
 	}
 	
+	/**
+	 * Shoots a bullet.
+	 */
+	public void shoot() {
+		
+		if(!canShoot) {
+			return;
+		}
+		
+		Rectangle rect = getPhysics().getRectangle();
+		
+		float posx = 0, posy = 0;
+		Vector2 dir = new Vector2();
+		
+		if(verticalFacingDirection == VerticalFacingDirection.None) {
+			if(horizontalFacingDirection == HorizontalFacingDirection.Right) {
+				posx = rect.x + rect.width;
+				posy = rect.y + rect.height/2;
+				dir.x = 1;
+			} else {
+				posx = rect.x;
+				posy = rect.y + rect.height/2;
+				dir.x = -1;
+			}
+		} else if (verticalFacingDirection == VerticalFacingDirection.Up) {
+			posx = rect.x + rect.width/2;
+			posy = rect.y + rect.height;
+			dir.y = 1;
+		} else {
+			posx = rect.x + rect.width/2;
+			posy = rect.y;
+			dir.y = -1;
+		}
+		
+		Bullet bullet = new Bullet(posx, posy, dir.scl(200));
+		addChild(bullet);
+		
+		canShoot = false;
+		enableShoot.scheduleTask(new Task() {
+
+			@Override
+			public void run() {
+				canShoot = true;
+			}
+			
+		}, SHOOT_DELAY);
+	}
+	
+	private CharacterPhysics getPhysics() {
+		return (CharacterPhysics) getPhysicalComponent();
+	}
 	
 }

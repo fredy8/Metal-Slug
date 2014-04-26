@@ -6,7 +6,7 @@ import com.madpanda.metalslug.screens.game.Entity;
 /**
  * A physical body defined by and Axis Aligned Bounding Box.
  */
-public class Body extends PhysicalComponent {
+public class Body extends UpdateComponent {
 
 	private Rectangle rectangle; //The bounds of the body
 	

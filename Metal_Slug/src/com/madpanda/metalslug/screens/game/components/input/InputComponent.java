@@ -92,4 +92,10 @@ public class InputComponent extends Component implements InputProcessor {
 		return processed;
 	}
 	
+	public void keyDownCheck() {
+		for(Entity entity : getEntity().getChildren()) {
+			entity.getInputComponent().keyDownCheck();
+		}
+	}
+	
 }

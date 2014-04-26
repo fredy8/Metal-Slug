@@ -24,6 +24,7 @@ public abstract class RenderWithOffset extends GraphicalComponent {
 	@Override
 	public void render(SpriteBatch batch) {
 		render(batch, Vector2.Zero);
+		super.render(batch);
 	}
 	
 	/**
@@ -31,7 +32,9 @@ public abstract class RenderWithOffset extends GraphicalComponent {
 	 * @param batch - The batch where the entity is drawn.
 	 * @param offset - The offset for drawing the entity.
 	 */
-	public abstract void render(SpriteBatch batch, Vector2 offset);
+	public void render(SpriteBatch batch, Vector2 offset) {
+		super.render(batch);
+	}
 	
 	/**
 	 * The default render method will render the entity shapes with no offset
@@ -39,6 +42,7 @@ public abstract class RenderWithOffset extends GraphicalComponent {
 	@Override
 	public void renderShapes() {
 		renderShapes(Vector2.Zero);
+		super.renderShapes();
 	}
 	
 	/**

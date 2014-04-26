@@ -4,7 +4,6 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -41,6 +40,7 @@ public class AnimationRender extends GraphicalComponent {
 		TextureRegion region = animation.getKeyFrame(stateTime, true);
 		batch.draw(region, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		stateTime += Gdx.graphics.getDeltaTime();
+		super.render(batch);
 	}
 	
 	/**

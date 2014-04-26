@@ -31,6 +31,7 @@ public class TextureRender extends GraphicalComponent {
 	public void render(SpriteBatch batch) {
 		sprite.setBounds(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		sprite.draw(batch);
+		super.render(batch);
 	}
 	
 	/**

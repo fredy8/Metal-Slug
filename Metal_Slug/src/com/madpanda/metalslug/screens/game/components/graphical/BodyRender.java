@@ -1,7 +1,6 @@
 package com.madpanda.metalslug.screens.game.components.graphical;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
@@ -32,7 +31,7 @@ public class BodyRender extends GraphicalComponent {
 	 * Renders the body as a shape of its physical component.
 	 */
 	@Override
-	public void render(SpriteBatch batch) {
+	public void renderShapes() {
 		ShapeRenderer renderer = GameScreen.getShapeRenderer(); //gets the shape renderer
 		//gets the shape of the physical component of the containing entity
 		Rectangle rect = ((Body) getEntity().getPhysicalComponent()).getRectangle();
@@ -40,9 +39,7 @@ public class BodyRender extends GraphicalComponent {
 		renderer.begin(ShapeType.Filled); //renders the shape filled
 		renderer.rect(rect.x, rect.y, rect.width, rect.height);
 		renderer.end();
+		super.renderShapes();
 	}
-
-	
-	
 	
 }
