@@ -35,6 +35,8 @@ public class MainMenuScreen extends AbstractScreen {
 	private BitmapFont minecrafter, minecraftia;
 	private Label heading;
 	private TweenManager tweenManager;
+	
+
 //	private Texture texture;
 	
 
@@ -51,10 +53,11 @@ public class MainMenuScreen extends AbstractScreen {
 		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		//creating fonts
-		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter.fnt"));
+		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter3.2.fnt"));
 //		minecrafter.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		minecraftia = new BitmapFont(Gdx.files.internal("menu/fonts/minecraftia.fnt"));
 //		minecraftia.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
 		
 		
 		//creating textbuttonstyle
@@ -106,10 +109,10 @@ public class MainMenuScreen extends AbstractScreen {
 //		table.row();
 		table.add(heading).spaceBottom(25);
 		table.row();
-		table.add(buttonPlay).size(160, 40);
+		table.add(buttonPlay).size(260, 80);
 		table.getCell(buttonPlay).spaceBottom(13);
 		table.row();
-		table.add(buttonOptions).size(160, 40);
+		table.add(buttonOptions).size(260, 80);
 		table.getCell(buttonOptions).spaceBottom(13);
 		table.row();
 		table.debug();//debug
