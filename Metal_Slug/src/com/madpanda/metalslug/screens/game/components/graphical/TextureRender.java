@@ -11,6 +11,7 @@ public class TextureRender extends GraphicalComponent {
 	
 	private Sprite sprite;
 	private Rectangle rectangle;
+	private boolean flipX;
 	
 	/**
 	 * Creates a new TextureRender graphical component for rendering a texture in a rectangle.
@@ -30,6 +31,7 @@ public class TextureRender extends GraphicalComponent {
 	@Override
 	public void render(SpriteBatch batch) {
 		sprite.setBounds(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		sprite.setFlip(flipX, false);
 		sprite.draw(batch);
 		super.render(batch);
 	}
@@ -39,6 +41,10 @@ public class TextureRender extends GraphicalComponent {
 	 */
 	public Rectangle getRectangle() {
 		return rectangle;
+	}
+
+	public void setFlipX(boolean flip) {
+		this.flipX = flip;
 	}
 
 }

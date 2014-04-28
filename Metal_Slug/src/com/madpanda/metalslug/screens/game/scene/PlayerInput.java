@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.madpanda.metalslug.screens.game.components.input.InputComponent;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
-import com.madpanda.metalslug.screens.game.scene.Character.MovementState;
+import com.madpanda.metalslug.screens.game.scene.character.Character;
+import com.madpanda.metalslug.screens.game.scene.character.Character.MovementState;
 
 /**
  * Handles the input for the character controlled by the player.

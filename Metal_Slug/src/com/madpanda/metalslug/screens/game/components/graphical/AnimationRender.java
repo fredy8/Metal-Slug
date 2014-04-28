@@ -4,6 +4,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -15,6 +16,7 @@ public class AnimationRender extends GraphicalComponent {
 	private Rectangle rectangle;
 	private Animation animation;
 	private float stateTime;
+	private boolean flipX;
 	
 	/**
 	 * Creates a new AnimationRender graphical component for rendering an animation in a rectangle.
@@ -25,11 +27,12 @@ public class AnimationRender extends GraphicalComponent {
 	public AnimationRender(Entity entity, Rectangle rectangle, List<String> texturesFilePaths) {
 		super(entity);
 		this.rectangle = rectangle;
+		flipX = false;
 		TextureRegion textures[] = new TextureRegion[texturesFilePaths.size()];
 		for(int i = 0; i < texturesFilePaths.size(); i++) {
 			textures[i] = new TextureRegion(new Texture(Gdx.files.internal(texturesFilePaths.get(i))));
 		}
-		animation = new Animation(.025f, textures);
+		animation = new Animation(.1f, textures);
 	}
 
 	/**
@@ -38,7 +41,9 @@ public class AnimationRender extends GraphicalComponent {
 	@Override
 	public void render(SpriteBatch batch) {
 		TextureRegion region = animation.getKeyFrame(stateTime, true);
-		batch.draw(region, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		Sprite sprite = new Sprite(region);
+		sprite.setFlip(flipX, false);
+		batch.draw(sprite, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 		stateTime += Gdx.graphics.getDeltaTime();
 		super.render(batch);
 	}
@@ -48,6 +53,10 @@ public class AnimationRender extends GraphicalComponent {
 	 */
 	public Rectangle getRectangle() {
 		return rectangle;
+	}
+
+	public void setFlipX(boolean flip) {
+		this.flipX = flip;
 	}
 
 }

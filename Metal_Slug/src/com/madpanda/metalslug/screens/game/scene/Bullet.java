@@ -9,7 +9,7 @@ import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
 
 public class Bullet extends Entity {
 
-	private static final float WIDTH = 20, HEIGHT = 10;
+	private static final float WIDTH = 10, HEIGHT = 5;
 	
 	/**
 	 * Creates a new bullet given its firing position and its speed.
@@ -44,7 +44,6 @@ public class Bullet extends Entity {
 			rect.width = rect.height;
 			rect.height = w;
 		}
-		
 		
 		if(direction.x > 0) {
 			rect.y -= rect.height/2;

@@ -1,4 +1,4 @@
-package com.madpanda.metalslug.screens.game.scene;
+package com.madpanda.metalslug.screens.game.scene.character;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -9,6 +9,8 @@ import com.madpanda.metalslug.screens.game.components.graphical.AnimationRender;
 import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
 import com.madpanda.metalslug.screens.game.components.physical.Body;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
+import com.madpanda.metalslug.screens.game.scene.Bullet;
+import com.madpanda.metalslug.screens.game.scene.Scene;
 
 /**
  * A character in the game. Moves freely in the scene colliding with some tiles.
@@ -25,16 +27,18 @@ public class Character extends Entity {
 	private TextureRender standingTexture; //the standing texture
 	private boolean canShoot;
 	private Timer enableShoot = new Timer();
+	private int healthPoints;
 		
 	/**
 	 * Creates a new character given its bounds and the scene in which it is created.
 	 * @param rectangle - The bounds of the character
 	 * @param scene - The scene where that character is created.
 	 */
-	public Character(Rectangle rectangle, Scene scene) {
+	public Character(Rectangle rectangle, Scene scene, int healthPoints) {
 		//set its physical component to the character physics component
 		this.setUpdateComponent(new CharacterPhysics(this, rectangle, scene, new CharacterCollisionHandler(this)));
-		//for debugging, the graphical component is set to rendering the body's shape.
+		
+		this.healthPoints = healthPoints;
 		
 		//by default, its state is jumping as it can be created in midair, its state will change to standing if it touches the floor.
 		movementState = MovementState.Jumping;
@@ -51,6 +55,7 @@ public class Character extends Entity {
 		if(movementState == MovementState.Standing) {
 			getPhysics().jump();
 			movementState = MovementState.Jumping; //set the state to jumping
+			standingTexture.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
 			setGraphicalComponent(standingTexture);
 		}
 	}
@@ -64,6 +69,7 @@ public class Character extends Entity {
 			getPhysics().stand();
 			movementState = MovementState.Standing;
 			if(Math.abs(getPhysics().getSpeed().x) > 0) {
+				moveAnimation.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
 				setGraphicalComponent(moveAnimation);
 			}
 		} else if(movementState == MovementState.Crouching) {
@@ -140,10 +146,12 @@ public class Character extends Entity {
 	 */
 	public void moveRight() {
 		if(movementState == MovementState.Standing) {
+			moveAnimation.setFlipX(false);
 			setGraphicalComponent(moveAnimation);
 		}
-		getPhysics().runRight();
 		horizontalFacingDirection = HorizontalFacingDirection.Right;
+		standingTexture.setFlipX(false);
+		getPhysics().runRight();
 	}
 	
 	/**
@@ -151,16 +159,19 @@ public class Character extends Entity {
 	 */
 	public void moveLeft() {
 		if(movementState == MovementState.Standing) {
+			moveAnimation.setFlipX(true);
 			setGraphicalComponent(moveAnimation);
 		}
-		getPhysics().runLeft();
 		horizontalFacingDirection = HorizontalFacingDirection.Left;
+		standingTexture.setFlipX(true);
+		getPhysics().runLeft();
 	}
 
 	/**
 	 * Stops the player horizontal movement.
 	 */
 	public void stopMovement() {
+		standingTexture.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
 		setGraphicalComponent(standingTexture);
 		MovingBody body = (MovingBody) getPhysicalComponent();
 		body.getSpeed().x = 0;
@@ -216,7 +227,7 @@ public class Character extends Entity {
 			dir.y = -1;
 		}
 		
-		Bullet bullet = new Bullet(posx, posy, dir.scl(200));
+		Bullet bullet = new Bullet(posx, posy, dir.scl(400));
 		addChild(bullet);
 		
 		canShoot = false;

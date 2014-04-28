@@ -36,8 +36,8 @@ public class SplashScreen extends AbstractScreen {
 		//Logo positioning 
 		splashSprite = new Sprite(splashTexture);
 		splashSprite.setColor(1,1,1,0);
-		splashSprite.setOrigin(splashSprite.getWidth()/2f, splashSprite.getHeight()/2f);
-		splashSprite.setPosition(Gdx.graphics.getWidth()/2f-splashSprite.getWidth()/2, Gdx.graphics.getHeight()/2f-splashSprite.getHeight()/2);
+		float aspectRatio = splashSprite.getWidth() / splashSprite.getHeight();
+		splashSprite.setBounds(getCamera().viewportWidth/2 - 100, getCamera().viewportHeight/2 - 100 / aspectRatio, 200, 200 / aspectRatio);
 		
 		//Sets up animations to start
 		Tween.registerAccessor(Sprite.class, new SpriteTween());

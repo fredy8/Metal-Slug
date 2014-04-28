@@ -1,5 +1,8 @@
 package com.madpanda.metalslug.screens.game;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.madpanda.metalslug.screens.game.components.graphical.GraphicalComponent;
 import com.madpanda.metalslug.screens.game.components.input.InputComponent;
 import com.madpanda.metalslug.screens.game.components.physical.UpdateComponent;
@@ -16,6 +19,8 @@ public class Entity {
 	private UpdateComponent updateComponent;
 	private GraphicalComponent graphicalComponent;
 	private InputComponent inputComponent;
+	
+	private Set<Entity> children = new HashSet<>();
 		
 	/**
 	 * Creates a new entity and initializes its components.
@@ -48,6 +53,18 @@ public class Entity {
 
 	public void setInputComponent(InputComponent inputComponent) {
 		this.inputComponent = inputComponent;
+	}
+	
+	public Set<Entity> getChildren() {
+		return children;
+	}
+	
+	public void addChild(Entity e) {
+		children.add(e);
+	}
+	
+	public void removeChild(Entity e) {
+		children.remove(e);
 	}
 	
 }

@@ -1,14 +1,15 @@
-package com.madpanda.metalslug.screens.game.scene;
+package com.madpanda.metalslug.screens.game.scene.character;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.madpanda.metalslug.screens.game.Entity;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
+import com.madpanda.metalslug.screens.game.scene.Scene;
+import com.madpanda.metalslug.screens.game.scene.Tile;
 
 /**
  * Defines the physical behavior for a character.
  * Handles collisions with the scene.
- *
  */
 public class CharacterPhysics extends MovingBody {
 

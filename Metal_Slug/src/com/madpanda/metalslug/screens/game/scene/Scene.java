@@ -1,15 +1,13 @@
 package com.madpanda.metalslug.screens.game.scene;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.madpanda.metalslug.screens.game.Entity;
-import com.madpanda.metalslug.screens.game.components.graphical.AnimationRender;
-import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
+import com.madpanda.metalslug.screens.game.scene.character.Character;
+import com.madpanda.metalslug.screens.game.scene.character.Player;
 
 /**
  * A scene in a game. Contains all the tiles and the players in the scene.
@@ -20,7 +18,7 @@ public class Scene extends Entity {
 	private final Tile[][] tiles; // the game tiles
 	private final int rows, columns; // the dimensions of the scene
 	private Set<Character> characters; // the characters in the scene.
-	private Character player; // the player character
+	private Player player; // the player character
 
 	/**
 	 * Creates a new Scene given the tiles information and the camera to display
@@ -44,20 +42,7 @@ public class Scene extends Entity {
 	}
 
 	private void initPlayer() {
-		// creates the player character
-		Rectangle rect = new Rectangle(220, 100, Tile.SIZE * 2, Tile.SIZE * 3);
-		player = new Character(rect, this);
-		List<String> playerFrames = new ArrayList<>();
-		for (int i = 1; i < 9; i++) {
-			playerFrames.add("images/game/bueno" + i + ".png");
-		}
-		player.setMoveAnimation(new AnimationRender(player, rect, playerFrames));
-		player.setGraphicalComponent(new TextureRender(player, rect, "images/game/bueno9.png"));
-		player.setStandingTexture((TextureRender) player.getGraphicalComponent());
-		
-		// make the camera follow the player
-		player.setInputComponent(new PlayerInput(player));
-		
+		player = new Player(this, 220, 100);
 		addCharacter(player);
 	}
 

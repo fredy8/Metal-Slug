@@ -1,7 +1,8 @@
-package com.madpanda.metalslug.screens.game.scene;
+package com.madpanda.metalslug.screens.game.scene.character;
 
-import com.madpanda.metalslug.screens.game.scene.Character.MovementState;
-import com.madpanda.metalslug.screens.game.scene.CharacterPhysics.AbstractCollisionHandler;
+import com.madpanda.metalslug.screens.game.scene.Tile;
+import com.madpanda.metalslug.screens.game.scene.character.Character.MovementState;
+import com.madpanda.metalslug.screens.game.scene.character.CharacterPhysics.AbstractCollisionHandler;
 
 /**
  * Handles the collision of the character with the scene.

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.madpanda.metalslug.screens.game.components.graphical.GraphicalComponent;
 import com.madpanda.metalslug.screens.game.components.graphical.RenderWithOffset;
+import com.madpanda.metalslug.screens.game.scene.character.Character;
 
 /**
  * The graphical component of the scene.
