@@ -26,105 +26,111 @@ import com.madpanda.metalslug.screens.game.GameScreen;
 
 public class MainMenuScreen extends AbstractScreen {
 	
-	/**
-	 * MainMenu Screen.
-	 * Contains buttons to start game.
-	 * 
-	 */
-	
 	private Stage stage;
 	private TextureAtlas atlas;
 	
 	private Skin skin;
 	private Table table;
-	private TextButton buttonPlay, buttonOptions;
+	private TextButton buttonPlay, buttonOptions;// buttonHighscore, buttonAchievements;
 	private BitmapFont minecrafter, minecraftia;
 	private Label heading;
 	private TweenManager tweenManager;
 	
 
+//	private Texture texture;
+	
+
 	public MainMenuScreen() {
-		stage = new Stage();//Initializes stage
+		stage = new Stage();
 		
-		Gdx.input.setInputProcessor(stage);//Enables controls on the stage.
+		Gdx.input.setInputProcessor(stage);
+		Gdx.input.setCatchBackKey(false);//back button disable
 		
-		atlas = new TextureAtlas("menu/buttons/blacknorange.pack");//Loads button atlas. (Texture)
+		atlas = new TextureAtlas("menu/buttons/blacknorange.pack");
 		skin = new Skin(atlas);
 		
 		table = new Table(skin);
 		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		//Creating fonts
-		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter.fnt"));
+		//creating fonts
+		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter3.2.fnt"));
+//		minecrafter.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		minecraftia = new BitmapFont(Gdx.files.internal("menu/fonts/minecraftia.fnt"));
+//		minecraftia.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+
 		
 		
 		//creating textbuttonstyle
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.getDrawable("button2");		  //Sets button2 texture for when the button is up.
-		textButtonStyle.down = skin.getDrawable("button2pressed");//Sets button2pressed texture for when the button is down.
-		textButtonStyle.pressedOffsetX = 1; //Pressed down effect.
-		textButtonStyle.pressedOffsetY = -1;//Pressed down effect.
-		textButtonStyle.font = minecraftia; //Sets buttons font
-		textButtonStyle.font.setScale(2f);  //Sets buttons font size
+		textButtonStyle.up = skin.getDrawable("button2");
+		textButtonStyle.down = skin.getDrawable("button2pressed");
+		textButtonStyle.pressedOffsetX = 1;
+		textButtonStyle.pressedOffsetY = -1;
+		textButtonStyle.font = minecraftia;
+		textButtonStyle.font.setScale(2f);
 		
-		//Creating play button.
+		//creating playbutton
 		buttonPlay = new TextButton("Play", textButtonStyle);
 		buttonPlay.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.log("START", "Starting...");
 				MainMenuScreen.this.dispose();
-				((App) Gdx.app.getApplicationListener()).setScreen(new GameScreen());//Changes screen to game screen
+				((App) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
 			}
 		});
 		buttonPlay.pad(20);
 		
-		//Creating options button
 		buttonOptions = new TextButton("Options", textButtonStyle);
 		buttonOptions.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.log("OPTIONS", "Options...");
-				MainMenuScreen.this.dispose();
-				((App) Gdx.app.getApplicationListener()).setScreen(new OptionsScreen());//Changes screen to OptionsScreen.
+//				MainMenuScreen.this.dispose();
+				((App) Gdx.app.getApplicationListener()).setScreen(new OptionsScreen());
 			}
 		});
 		buttonOptions.pad(20);
 		
 		
-		//Creating heading(title)
-		LabelStyle headingStyle = new LabelStyle(minecrafter, Color.WHITE);//Font style and color.
-		heading = new Label("Guacamole", headingStyle); //heading text
+		//creating heading
+		LabelStyle headingStyle = new LabelStyle(minecrafter, Color.WHITE);
+		heading = new Label("INSERT NaME HERE", headingStyle);
 		
-		heading.setFontScale(3f);//Heading font Size
+		heading.setFontScale(3f);
 		
-		//Creating sprite for MainMenu
-		/*texture = new Texture("player/character2.png");
-		Image walker = new Image(texture);
+		//creating sprite
+//		texture = new Texture("player/character2.png");
+//		Image walker = new Image(texture);
 		
-		putting stuff together
-		table.add(walker).size(250);
-		table.getCell(walker).spaceBottom(50);
-		table.row();
-		*/
+		//putting stuff together
+//		table.add(walker).size(250);
+//		table.getCell(walker).spaceBottom(50);
+//		table.row();
 		table.add(heading).spaceBottom(25);
 		table.row();
-		table.add(buttonPlay).size(160, 40);
+		table.add(buttonPlay).size(260, 80);
 		table.getCell(buttonPlay).spaceBottom(13);
 		table.row();
-		table.add(buttonOptions).size(160, 40);
+		table.add(buttonOptions).size(260, 80);
 		table.getCell(buttonOptions).spaceBottom(13);
 		table.row();
 		table.debug();//debug
 		stage.addActor(table);
 		
-		//Creating animations
-		tweenManager = new TweenManager();//Initialize tweenManager to manage tweens
+		//creating animations
+		tweenManager = new TweenManager();
 		Tween.registerAccessor(Actor.class , new ActorAccessor());
 		
-		Timeline.createSequence().beginSequence()//Fade in animations
-			.push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))//sets starting alpha(0)
+		//deploying animations
+//		Timeline.createSequence().beginSequence()
+//			.push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0,0,1))
+//			.push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0,1,0))
+//			.push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1,0,0))
+//			.end().repeat(Tween.INFINITY, 0).start(tweenManager);
+		
+		Timeline.createSequence().beginSequence()
+			.push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
 			.push(Tween.set(buttonOptions, ActorAccessor.ALPHA).target(0))
 			.beginParallel()
 			.push(Tween.from(heading, ActorAccessor.ALPHA, 1f).target(0))
@@ -136,15 +142,19 @@ public class MainMenuScreen extends AbstractScreen {
 			.end()
 			.end().start(tweenManager);
 		
-		Tween.from(table, ActorAccessor.Y, .75f).target(Gdx.graphics.getHeight() / 8).start(tweenManager);//Jump in animation
+//		Tween.from(table, ActorAccessor.ALPHA, 0.5f).target(0).start(tweenManager);
+//		Tween.from(table, ActorAccessor.ALPHA, 0.5f).target(Gdx.graphics.getHeight()/8).start(tweenManager);
+		Tween.from(table, ActorAccessor.Y, .75f).target(Gdx.graphics.getHeight() / 8).start(tweenManager);
 	}
 	
 	@Override
 	public void render(SpriteBatch batch) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//		batch.draw(Assets.moon, Gdx.graphics.getWidth()/4 *3, Gdx.graphics.getHeight()/4 *3);
+//		batch.draw(Assets.background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		tweenManager.update(Gdx.graphics.getDeltaTime());//Updates tween
+		tweenManager.update(Gdx.graphics.getDeltaTime());
 		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
