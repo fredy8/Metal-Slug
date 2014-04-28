@@ -1,45 +1,37 @@
 package com.madpanda.metalslug.screens.game;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.madpanda.metalslug.screens.game.components.graphical.GraphicalComponent;
 import com.madpanda.metalslug.screens.game.components.input.InputComponent;
-import com.madpanda.metalslug.screens.game.components.physical.PhysicalComponent;
+import com.madpanda.metalslug.screens.game.components.physical.UpdateComponent;
 
+/**
+ * The main unit of the game.
+ * An entity can contain child entities.
+ * Every entity has a physical, graphical and input component.
+ *
+ */
 public class Entity {
 
-	private PhysicalComponent physicalComponent;
+	//the entity components
+	private UpdateComponent updateComponent;
 	private GraphicalComponent graphicalComponent;
 	private InputComponent inputComponent;
-	
-	private Set<Entity> children;
-	
+		
+	/**
+	 * Creates a new entity and initializes its components.
+	 */
 	public Entity() {
-		children = new HashSet<>();
-		physicalComponent = new PhysicalComponent(this);
+		updateComponent = new UpdateComponent(this);
 		graphicalComponent = new GraphicalComponent(this);
 		inputComponent = new InputComponent(this);
 	}
-	
-	public void addChild(Entity entity) {
-		children.add(entity);
-	}
-	
-	public void removeChild(Entity entity) {
-		children.remove(entity);
+
+	public UpdateComponent getPhysicalComponent() {
+		return updateComponent;
 	}
 
-	public Set<Entity> getChildren() {
-		return children;
-	}
-
-	public PhysicalComponent getPhysicalComponent() {
-		return physicalComponent;
-	}
-
-	public void setPhysicalComponent(PhysicalComponent physicalComponent) {
-		this.physicalComponent = physicalComponent;
+	public void setUpdateComponent(UpdateComponent updateComponent) {
+		this.updateComponent = updateComponent;
 	}
 
 	public GraphicalComponent getGraphicalComponent() {
