@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -122,13 +123,6 @@ public class MainMenuScreen extends AbstractScreen {
 		tweenManager = new TweenManager();
 		Tween.registerAccessor(Actor.class , new ActorAccessor());
 		
-		//deploying animations
-//		Timeline.createSequence().beginSequence()
-//			.push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0,0,1))
-//			.push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(0,1,0))
-//			.push(Tween.to(heading, ActorAccessor.RGB, 0.5f).target(1,0,0))
-//			.end().repeat(Tween.INFINITY, 0).start(tweenManager);
-		
 		Timeline.createSequence().beginSequence()
 			.push(Tween.set(buttonPlay, ActorAccessor.ALPHA).target(0))
 			.push(Tween.set(buttonOptions, ActorAccessor.ALPHA).target(0))
@@ -152,7 +146,7 @@ public class MainMenuScreen extends AbstractScreen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //		batch.draw(Assets.moon, Gdx.graphics.getWidth()/4 *3, Gdx.graphics.getHeight()/4 *3);
-//		batch.draw(Assets.background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(new Texture(Gdx.files.internal("menu/images/bkg-menu.png")), 0, 0, getCamera().viewportWidth, getCamera().viewportHeight);
 		
 		tweenManager.update(Gdx.graphics.getDeltaTime());
 		

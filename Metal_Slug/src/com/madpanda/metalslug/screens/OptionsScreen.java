@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -54,7 +55,7 @@ public class OptionsScreen extends AbstractScreen {
 		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		//creating fonts
-		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter.fnt"));
+		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter3.2.fnt"));
 //		minecrafter.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		minecraftia = new BitmapFont(Gdx.files.internal("menu/fonts/minecraftia.fnt"));
 //		minecraftia.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
@@ -153,7 +154,7 @@ public class OptionsScreen extends AbstractScreen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //		batch.draw(Assets.moon, Gdx.graphics.getWidth()/4 *3, Gdx.graphics.getHeight()/4 *3);
-//		batch.draw(Assets.background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		batch.draw(new Texture(Gdx.files.internal("menu/images/bkg-menu.png")), 0, 0, getCamera().viewportWidth, getCamera().viewportHeight);
 		
 		tweenManager.update(Gdx.graphics.getDeltaTime());
 		
