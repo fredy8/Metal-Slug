@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -54,7 +55,7 @@ public class MainMenuScreen extends AbstractScreen {
 		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		//creating fonts
-		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter3.2.fnt"));
+		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter.fnt"));
 //		minecrafter.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		minecraftia = new BitmapFont(Gdx.files.internal("menu/fonts/minecraftia.fnt"));
 //		minecraftia.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
