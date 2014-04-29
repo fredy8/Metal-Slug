@@ -20,7 +20,7 @@ public class Entity {
 	private GraphicalComponent graphicalComponent;
 	private InputComponent inputComponent;
 	
-	private Set<Entity> children = new HashSet<>();
+	protected Set<Entity> children = new HashSet<>();
 		
 	/**
 	 * Creates a new entity and initializes its components.

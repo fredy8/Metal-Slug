@@ -1,6 +1,7 @@
 package com.madpanda.metalslug.screens.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.madpanda.metalslug.screens.AbstractScreen;
 import com.madpanda.metalslug.screens.game.scene.Scene;
@@ -20,14 +21,18 @@ public class GameScreen extends AbstractScreen {
 	 * Initializes the game and the initial scene.
 	 */
 	public GameScreen() {
+		Music music = Gdx.audio.newMusic(Gdx.files.internal("music/background.mp3"));
+		music.setLooping(true);
+		music.play();
 		setScene(GameEntityFactory.createScene(1, getCamera()));
-		
+		instance = this;
 	}
 
 	@Override
 	public void update() {
 		currentScene.getInputComponent().keyDownCheck();
 		currentScene.getPhysicalComponent().update(); //updates the game
+		currentScene.update();
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ public class AnimationRender extends GraphicalComponent {
 		for(int i = 0; i < texturesFilePaths.size(); i++) {
 			textures[i] = new TextureRegion(new Texture(Gdx.files.internal(texturesFilePaths.get(i))));
 		}
-		animation = new Animation(.1f, textures);
+		animation = new Animation(.11f, textures);
 	}
 
 	/**

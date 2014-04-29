@@ -1,15 +1,16 @@
 package com.madpanda.metalslug.screens.game.scene;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.madpanda.metalslug.screens.game.Entity;
-import com.madpanda.metalslug.screens.game.components.graphical.BodyRender;
+import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
 
 public class Bullet extends Entity {
 
 	private static final float WIDTH = 10, HEIGHT = 5;
+	
+	private boolean dead;
 	
 	/**
 	 * Creates a new bullet given its firing position and its speed.
@@ -32,7 +33,7 @@ public class Bullet extends Entity {
 		physicalComponent.setSpeed(speed);
 		setUpdateComponent(physicalComponent);
 		
-		setGraphicalComponent(new BodyRender(this, Color.BLUE));
+		setGraphicalComponent(new TextureRender(this, rect, "images/game/blob/blob1.png"));
 	}
 	
 	private Rectangle calculateBounds(float posX, float posY, Vector2 direction) {
@@ -58,6 +59,14 @@ public class Bullet extends Entity {
 		}
 				
 		return rect;
+	}
+
+	public void die() {
+		dead = true;
+	}
+	
+	public boolean dead() {
+		return dead;
 	}
 	
 }

@@ -18,6 +18,10 @@ public class AbstractScreen implements Screen, InputProcessor {
 	private OrthographicCamera camera; //the screen's camera
 	protected static ShapeRenderer shapeRenderer = new ShapeRenderer(); //used for rendering shapes
 	
+	/**
+	 * Creates a new AbstractScreen.
+	 * Initializes its main components and serves as base for all screens.
+	 */
 	public AbstractScreen() {
 		//init the batch and camera
 		batch = new SpriteBatch();
@@ -104,7 +108,7 @@ public class AbstractScreen implements Screen, InputProcessor {
 	@Override
 	public boolean scrolled(int amount) { return false; }
 	
-	protected final OrthographicCamera getCamera() {
+	public final OrthographicCamera getCamera() {
 		return camera;
 	}
 	

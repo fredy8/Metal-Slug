@@ -61,13 +61,14 @@ public class Tile extends Entity {
 
 		@Override
 		public void renderShapes(Vector2 offset) {
+			ShapeRenderer renderer = GameScreen.getShapeRenderer();
+			renderer.setColor(Color.MAGENTA);
 			if (!((Tile) this.getEntity()).isObstacleX() && !((Tile) this.getEntity()).isObstacleY()) {
-				ShapeRenderer renderer = GameScreen.getShapeRenderer();
 				renderer.setColor(Color.RED);
-				renderer.begin(ShapeType.Filled);
-				renderer.rect((float) offset.x, (float) offset.y, SIZE, SIZE);
-				renderer.end();
 			}
+			renderer.begin(ShapeType.Filled);
+			renderer.rect((float) offset.x, (float) offset.y, SIZE, SIZE);
+			renderer.end();
 		}
 		
 	}

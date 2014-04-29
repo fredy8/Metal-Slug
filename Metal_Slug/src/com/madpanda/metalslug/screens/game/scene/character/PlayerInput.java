@@ -1,10 +1,9 @@
-package com.madpanda.metalslug.screens.game.scene;
+package com.madpanda.metalslug.screens.game.scene.character;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.madpanda.metalslug.screens.game.components.input.InputComponent;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
-import com.madpanda.metalslug.screens.game.scene.character.Character;
 import com.madpanda.metalslug.screens.game.scene.character.Character.MovementState;
 
 /**
@@ -86,7 +85,7 @@ public class PlayerInput extends InputComponent {
 			}
 			return true;
 		case Input.Keys.K:
-			character.shoot();
+			character.shoot(400);
 			return true;
 		}
 		return false;
@@ -96,7 +95,7 @@ public class PlayerInput extends InputComponent {
 	public void keyDownCheck() {
 		Character character = (Character) getEntity();
 		if(Gdx.app.getInput().isKeyPressed(Input.Keys.K)) {
-			character.shoot();
+			character.shoot(400);
 		}
 		
 		super.keyDownCheck();

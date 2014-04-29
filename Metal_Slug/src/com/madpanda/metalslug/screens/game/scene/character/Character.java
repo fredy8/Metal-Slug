@@ -1,11 +1,13 @@
 package com.madpanda.metalslug.screens.game.scene.character;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.madpanda.metalslug.screens.game.Entity;
 import com.madpanda.metalslug.screens.game.components.graphical.AnimationRender;
+import com.madpanda.metalslug.screens.game.components.graphical.GraphicalComponent;
 import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
 import com.madpanda.metalslug.screens.game.components.physical.Body;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
@@ -18,7 +20,7 @@ import com.madpanda.metalslug.screens.game.scene.Scene;
  */
 public class Character extends Entity {
 
-	private static final float SHOOT_DELAY = .15f;
+	private static final float SHOOT_DELAY = .25f;
 	
 	private MovementState movementState; //the state in which the character is
 	private HorizontalFacingDirection horizontalFacingDirection; //the direction towards which the player is facing horizontally
@@ -27,18 +29,20 @@ public class Character extends Entity {
 	private TextureRender standingTexture; //the standing texture
 	private boolean canShoot;
 	private Timer enableShoot = new Timer();
-	private int healthPoints;
-		
+	private int lives;
+	private boolean dead;
+	private TextureRender jumpingTexture;
+
 	/**
 	 * Creates a new character given its bounds and the scene in which it is created.
 	 * @param rectangle - The bounds of the character
 	 * @param scene - The scene where that character is created.
 	 */
-	public Character(Rectangle rectangle, Scene scene, int healthPoints) {
+	public Character(Rectangle rectangle, Scene scene, int lives) {
 		//set its physical component to the character physics component
 		this.setUpdateComponent(new CharacterPhysics(this, rectangle, scene, new CharacterCollisionHandler(this)));
 		
-		this.healthPoints = healthPoints;
+		this.lives = lives;
 		
 		//by default, its state is jumping as it can be created in midair, its state will change to standing if it touches the floor.
 		movementState = MovementState.Jumping;
@@ -55,8 +59,8 @@ public class Character extends Entity {
 		if(movementState == MovementState.Standing) {
 			getPhysics().jump();
 			movementState = MovementState.Jumping; //set the state to jumping
-			standingTexture.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
-			setGraphicalComponent(standingTexture);
+			jumpingTexture.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
+			setGraphicalComponent(jumpingTexture);
 		}
 	}
 	
@@ -68,6 +72,7 @@ public class Character extends Entity {
 		if(movementState == MovementState.Jumping) {
 			getPhysics().stand();
 			movementState = MovementState.Standing;
+			setGraphicalComponent(standingTexture);
 			if(Math.abs(getPhysics().getSpeed().x) > 0) {
 				moveAnimation.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
 				setGraphicalComponent(moveAnimation);
@@ -151,6 +156,7 @@ public class Character extends Entity {
 		}
 		horizontalFacingDirection = HorizontalFacingDirection.Right;
 		standingTexture.setFlipX(false);
+		jumpingTexture.setFlipX(false);
 		getPhysics().runRight();
 	}
 	
@@ -164,6 +170,7 @@ public class Character extends Entity {
 		}
 		horizontalFacingDirection = HorizontalFacingDirection.Left;
 		standingTexture.setFlipX(true);
+		jumpingTexture.setFlipX(true);
 		getPhysics().runLeft();
 	}
 
@@ -172,7 +179,12 @@ public class Character extends Entity {
 	 */
 	public void stopMovement() {
 		standingTexture.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
-		setGraphicalComponent(standingTexture);
+		jumpingTexture.setFlipX(horizontalFacingDirection == HorizontalFacingDirection.Left);
+		if(this.movementState == MovementState.Jumping) {
+			setGraphicalComponent(jumpingTexture);
+		} else {
+			setGraphicalComponent(standingTexture);
+		}
 		MovingBody body = (MovingBody) getPhysicalComponent();
 		body.getSpeed().x = 0;
 	}
@@ -195,8 +207,9 @@ public class Character extends Entity {
 	
 	/**
 	 * Shoots a bullet.
+	 * @param speed 
 	 */
-	public void shoot() {
+	public void shoot(int speed) {
 		
 		if(!canShoot) {
 			return;
@@ -227,8 +240,9 @@ public class Character extends Entity {
 			dir.y = -1;
 		}
 		
-		Bullet bullet = new Bullet(posx, posy, dir.scl(400));
+		Bullet bullet = new Bullet(posx, posy, dir.scl(speed));
 		addChild(bullet);
+		Scene.getInstance().addBullet(bullet, this);
 		
 		canShoot = false;
 		enableShoot.scheduleTask(new Task() {
@@ -244,5 +258,38 @@ public class Character extends Entity {
 	private CharacterPhysics getPhysics() {
 		return (CharacterPhysics) getPhysicalComponent();
 	}
+	
+	public void setFacingDirection(HorizontalFacingDirection direction) {
+		this.horizontalFacingDirection = direction;
+	}
+
+	public void hit(Bullet bullet) {
+		lives--;
+		if(lives == 0) {
+			die();
+		}
+	}
+	
+	public void die() {
+		dead = true;
+	}
+	
+	public boolean dead() {
+		return dead;
+	}
+
+	public GraphicalComponent getJumpingTexture() {
+		return jumpingTexture;
+	}
+
+	public void setJumpingTexture(TextureRender jumpingTexture) {
+		this.jumpingTexture = jumpingTexture;
+	}
+	
+	public int getLivesCount() {
+		return lives;
+	}
+
+	public void update() { }
 	
 }

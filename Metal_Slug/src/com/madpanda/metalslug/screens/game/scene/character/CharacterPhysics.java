@@ -13,8 +13,8 @@ import com.madpanda.metalslug.screens.game.scene.Tile;
  */
 public class CharacterPhysics extends MovingBody {
 
-	private static final Vector2 JUMP = new Vector2(0, 200); //The jumping speed
-	private static final Vector2 GRAVITY = new Vector2(0, -300); //the gravity vector
+	private static final Vector2 JUMP = new Vector2(0, 250); //The jumping speed
+	private static final Vector2 GRAVITY = new Vector2(0, -320); //the gravity vector
 	private static final float RUNNING_SPEED = 200; //the gravity vector
 	private Scene scene; //The scene that contains the character
 	private CollisionHandler collisionHandler; //The collision handler for the character
@@ -82,7 +82,7 @@ public class CharacterPhysics extends MovingBody {
 							//collision found
 							vector.x = i*Tile.SIZE - getRectangle().x - getRectangle().width - .001f;
 							foundObstacle = true;
-							collisionHandler.rightCollision(scene.getTile(i, j));
+							collisionHandler.rightCollision(scene.getTile(j, i));
 						}
 					}
 				}
@@ -99,7 +99,7 @@ public class CharacterPhysics extends MovingBody {
 							//collision found
 							foundObstacle = true;
 							vector.x = (i+1)*Tile.SIZE - getRectangle().x + .001f;
-							collisionHandler.leftCollision(scene.getTile(i, j));
+							collisionHandler.leftCollision(scene.getTile(j, i));
 						}
 					}
 				}
