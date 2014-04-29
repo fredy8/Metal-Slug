@@ -160,7 +160,7 @@ public class OptionsScreen extends AbstractScreen {
 		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-		Table.drawDebug(stage);//debug
+//		Table.drawDebug(stage);//debug
 	}
 
 	@Override

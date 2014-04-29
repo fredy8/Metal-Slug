@@ -97,7 +97,7 @@ public class MainMenuScreen extends AbstractScreen {
 		
 		//creating heading
 		LabelStyle headingStyle = new LabelStyle(minecrafter, Color.WHITE);
-		heading = new Label("INSERT NaME HERE", headingStyle);
+		heading = new Label("Weird sprites", headingStyle);
 		
 		heading.setFontScale(3f);
 		
@@ -147,13 +147,13 @@ public class MainMenuScreen extends AbstractScreen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //		batch.draw(Assets.moon, Gdx.graphics.getWidth()/4 *3, Gdx.graphics.getHeight()/4 *3);
-		batch.draw(new Texture(Gdx.files.internal("menu/images/bkg-menu.png")), 0, 0, getCamera().viewportWidth, getCamera().viewportHeight);
+//		batch.draw(new Texture(Gdx.files.internal("menu/images/bkg-menu.png")), 0, 0, getCamera().viewportWidth, getCamera().viewportHeight);
 		
 		tweenManager.update(Gdx.graphics.getDeltaTime());
 		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-		Table.drawDebug(stage);//debug
+//		Table.drawDebug(stage);//debug
 	}
 
 	@Override
