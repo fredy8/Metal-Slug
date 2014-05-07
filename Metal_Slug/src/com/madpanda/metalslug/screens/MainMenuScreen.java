@@ -6,9 +6,7 @@ import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -25,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.madpanda.metalslug.App;
 import com.madpanda.metalslug.TweenAccessors.ActorAccessor;
 import com.madpanda.metalslug.screens.game.GameScreen;
+import com.madpanda.metalslug.screens.game.TextureManager;
 
 public class MainMenuScreen extends AbstractScreen {
 	
@@ -37,7 +36,7 @@ public class MainMenuScreen extends AbstractScreen {
 	private BitmapFont minecrafter, minecraftia;
 	private Label heading;
 	private TweenManager tweenManager;
-	
+	private Texture backgroundTexture = TextureManager.getTexture("menu/images/bkgMenu.png");
 
 //	private Texture texture;
 	
@@ -52,7 +51,7 @@ public class MainMenuScreen extends AbstractScreen {
 		skin = new Skin(atlas);
 		
 		table = new Table(skin);
-		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/2);
 		
 		//creating fonts
 		minecrafter = new BitmapFont(Gdx.files.internal("menu/fonts/minecrafter.fnt"));
@@ -60,7 +59,6 @@ public class MainMenuScreen extends AbstractScreen {
 		minecraftia = new BitmapFont(Gdx.files.internal("menu/fonts/minecraftia.fnt"));
 //		minecraftia.getRegion().getTexture().setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 
-		
 		
 		//creating textbuttonstyle
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -76,7 +74,6 @@ public class MainMenuScreen extends AbstractScreen {
 		buttonPlay.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
-				Gdx.app.log("START", "Starting...");
 				MainMenuScreen.this.dispose();
 				((App) Gdx.app.getApplicationListener()).setScreen(new GameScreen());
 			}
@@ -97,9 +94,9 @@ public class MainMenuScreen extends AbstractScreen {
 		
 		//creating heading
 		LabelStyle headingStyle = new LabelStyle(minecrafter, Color.WHITE);
-		heading = new Label("Weird sprites", headingStyle);
+		heading = new Label("LSD Warfare", headingStyle);
 		
-		heading.setFontScale(3f);
+		heading.setFontScale(2f);
 		
 		//creating sprite
 //		texture = new Texture("player/character2.png");
@@ -144,16 +141,19 @@ public class MainMenuScreen extends AbstractScreen {
 	
 	@Override
 	public void render(SpriteBatch batch) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 //		batch.draw(Assets.moon, Gdx.graphics.getWidth()/4 *3, Gdx.graphics.getHeight()/4 *3);
-//		batch.draw(new Texture(Gdx.files.internal("menu/images/bkg-menu.png")), 0, 0, getCamera().viewportWidth, getCamera().viewportHeight);
+		batch.draw(backgroundTexture, 0, 0, getCamera().viewportWidth, getCamera().viewportHeight);
 		
+//		Table.drawDebug(stage);//debug
+	}
+	
+	
+
+	@Override
+	public void update() {
 		tweenManager.update(Gdx.graphics.getDeltaTime());
-		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-//		Table.drawDebug(stage);//debug
 	}
 
 	@Override

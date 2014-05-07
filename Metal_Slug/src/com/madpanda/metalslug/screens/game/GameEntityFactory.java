@@ -23,14 +23,14 @@ public class GameEntityFactory {
 	 * @param camera - The camera that will display the scene.
 	 * @return - The created scene
 	 */
-	public static Scene createScene(int id, OrthographicCamera camera) {
+	public static Scene createScene(int id, OrthographicCamera camera, int lives) {
 		Tile tiles[][]; //the tiles of the new scene
 		
 		//read from the scene data folder
 		try(Scanner scanner = new Scanner(Gdx.files.internal("data/scenes/" + id + ".txt").reader(8192))) {
 			tiles = new Tile[scanner.nextInt()][scanner.nextInt()];
 			
-			//reades every tile from the file
+			//reads every tile from the file
 			for(int i = 0; i < tiles.length; i++) {
 				for(int j = 0; j < tiles[i].length; j++) {
 					int type = scanner.nextInt();
@@ -40,7 +40,7 @@ public class GameEntityFactory {
 			}
 		}
 		
-		return new Scene(tiles, camera);
+		return new Scene(tiles, camera, id, lives);
 	}
 
 }

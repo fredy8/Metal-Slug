@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -22,17 +20,15 @@ import com.madpanda.metalslug.screens.game.scene.Tile;
  * A character in the game. Moves freely in the scene colliding with some tiles.
  *
  */
-public class Character extends MovingBody {
+public abstract class Character extends MovingBody {
 
-	private static final float RUNNING_SPEED = 200; //the gravity vector
+	private float runningSpeed = 200;
 	private static final float GRAVITY = 400;
 	
-	private FacingDirection horizontalFacingDirection; //the direction towards which the player is facing horizontally
-	private Animation moveAnimation; //the move animation
-	private Sprite standingSprite; //the standing texture
+	private FacingDirection facingDirection; //the direction towards which the player is facing horizontally
 	private boolean canShoot;
 	private Timer enableShoot = new Timer();
-	private int lives;
+	protected int lives;
 	private boolean dead;
 	private Set<Bullet> bullets;
 	private List<Bullet> removeBullets;
@@ -48,7 +44,7 @@ public class Character extends MovingBody {
 		setAcceleration(new Vector2(0, -GRAVITY));
 		this.lives = lives;
 		
-		horizontalFacingDirection = FacingDirection.Right;
+		facingDirection = FacingDirection.Right;
 		canShoot = true;
 		
 		bullets = new HashSet<>();
@@ -66,16 +62,16 @@ public class Character extends MovingBody {
 	 * Makes the player move to the right until stopped.
 	 */
 	public void moveRight() {
-		horizontalFacingDirection = FacingDirection.Right;
-		setSpeed(new Vector2(RUNNING_SPEED, getSpeed().y));
+		facingDirection = FacingDirection.Right;
+		setSpeed(new Vector2(runningSpeed, getSpeed().y));
 	}
 	
 	/**
 	 * Makes the player move to the left until stopped.
 	 */
 	public void moveLeft() {
-		horizontalFacingDirection = FacingDirection.Left;
-		setSpeed(new Vector2(-RUNNING_SPEED, getSpeed().y));
+		facingDirection = FacingDirection.Left;
+		setSpeed(new Vector2(-runningSpeed, getSpeed().y));
 	}
 
 	/**
@@ -87,11 +83,12 @@ public class Character extends MovingBody {
 	
 	/**
 	 * Shoots a bullet.
+	 * @param bulletStrength 
 	 */
-	public void shoot(int speed, float delay) {
+	public boolean shoot(int speed, float delay, int bulletStrength, float lifetime) {
 		
 		if(!canShoot) {
-			return;
+			return false;
 		}
 		
 		Rectangle rect = getRectangle();
@@ -99,7 +96,7 @@ public class Character extends MovingBody {
 		float posx = 0, posy = 0;
 		Vector2 dir = new Vector2();
 		
-		if(horizontalFacingDirection == FacingDirection.Right) {
+		if(facingDirection == FacingDirection.Right) {
 			posx = rect.x + rect.width;
 			posy = rect.y + rect.height/2;
 			dir.x = 1;
@@ -109,7 +106,7 @@ public class Character extends MovingBody {
 			dir.x = -1;
 		}
 		
-		Bullet bullet = new Bullet(this, posx, posy, dir.scl(speed), new Texture("images/game/fullHeart.png"));
+		Bullet bullet = new Bullet(this, posx, posy, dir.scl(speed), getBulletTexture(), bulletStrength, lifetime);
 		bullets.add(bullet);
 		
 		canShoot = false;
@@ -119,13 +116,15 @@ public class Character extends MovingBody {
 				canShoot = true;
 			}
 		}, delay);
+		
+		return true;
 	}
 	
 	/**
 	 * Sets the facing direction of the character.
 	 */
 	public void setFacingDirection(FacingDirection direction) {
-		this.horizontalFacingDirection = direction;
+		this.facingDirection = direction;
 	}
 
 	/**
@@ -134,12 +133,12 @@ public class Character extends MovingBody {
 	 */
 	public void hit(Bullet bullet) {
 		bullet.remove();
-		lives--;
-		if(lives == 0) {
+		lives -= bullet.getBulletStrength();
+		if(lives <= 0) {
 			die();
 		}
 	}
-	
+
 	/**
 	 * Kills the character.
 	 */
@@ -285,5 +284,19 @@ public class Character extends MovingBody {
 	public void removeBullet(Bullet bullet) {
 		removeBullets.add(bullet);
 	}
+	
+	public FacingDirection getFacingDirection() {
+		return facingDirection;
+	}
+
+	public float getRunningSpeed() {
+		return runningSpeed;
+	}
+
+	public void setRunningSpeed(float runningSpeed) {
+		this.runningSpeed = runningSpeed;
+	}
+
+	public abstract Texture getBulletTexture();
 	
 }

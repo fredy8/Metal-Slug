@@ -16,7 +16,6 @@ public class AbstractScreen implements Screen, InputProcessor {
 	
 	private SpriteBatch batch; //the batch for drawing to the screen
 	private OrthographicCamera camera; //the screen's camera
-	protected static ShapeRenderer shapeRenderer = new ShapeRenderer(); //used for rendering shapes
 	
 	/**
 	 * Creates a new AbstractScreen.
@@ -41,27 +40,20 @@ public class AbstractScreen implements Screen, InputProcessor {
 	 */
 	public void render(SpriteBatch batch) { }
 	
-	/**
-	 * Called every frame and used to draw shapes to the screen
-	 */
-	public void renderShapes() { }
-	
 	@Override
 	public final void render(float delta) {
-		update(); //update before rendering
 		
 		//render
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clears the screen
 		//applies the camera to the batch and the shape renderer
-		shapeRenderer.setProjectionMatrix(camera.combined);
 		batch.setProjectionMatrix(camera.combined);
-		
-		renderShapes();
 		
 		//renders the batch
 		batch.begin();
 		render(batch);
 		batch.end();
+		
+		update(); //update before rendering
 	}
 	
 	@Override
@@ -112,11 +104,4 @@ public class AbstractScreen implements Screen, InputProcessor {
 		return camera;
 	}
 	
-	/**
-	 * Returns the shape renderer
-	 * @return - the renderer for drawing shapes
-	 */
-	public static ShapeRenderer getShapeRenderer() {
-		return shapeRenderer;
-	}
 }

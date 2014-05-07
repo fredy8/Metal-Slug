@@ -17,18 +17,24 @@ public class Bullet extends MovingBody {
 	private Character shooter;
 	private Sprite sprite;
 	private boolean removed;
-	
+
+	private int bulletStrength;
+
 	/**
 	 * Creates a new bullet given its firing position and its speed.
 	 * @param shooter - The character that fired the bullet.
 	 * @param posX - The x component of the firing position.
 	 * @param posY - The y component of the firing position.
 	 * @param speed - The speed and direction of the bullet. Must be horizontal or vertical.
+	 * @param bulletStrength 
 	 */
-	public Bullet(final Character shooter, float posX, float posY, Vector2 speed, Texture texture) {
+	public Bullet(final Character shooter, float posX, float posY, Vector2 speed, Texture texture, int bulletStrength, float lifetime) {
 		super(calculateBounds(posX, posY, speed.cpy().nor()));
 		
 		this.shooter = shooter;
+		this.bulletStrength = bulletStrength;
+		getRectangle().width *= bulletStrength;
+		getRectangle().height *= bulletStrength;
 		
 		if(speed.equals(Vector2.Zero)) {
 			throw new IllegalArgumentException("The speed cannot be zero.");
@@ -46,7 +52,7 @@ public class Bullet extends MovingBody {
 				remove();
 			}
 			
-		}, .5f);
+		}, .7f);
 		
 		setSpeed(speed);
 		
@@ -64,7 +70,8 @@ public class Bullet extends MovingBody {
 		super.update();
 		
 		for(Character character : Scene.getInstance().getCharacters()) {
-			if(shooter != character) {
+			if(shooter != Scene.getInstance().getPlayer() && character == Scene.getInstance().getPlayer() ||
+					shooter == Scene.getInstance().getPlayer() && character != Scene.getInstance().getPlayer()) {
 				if(getRectangle().overlaps(character.getRectangle())) {
 					character.hit(this);
 				}
@@ -98,8 +105,13 @@ public class Bullet extends MovingBody {
 	}
 
 	public void render(SpriteBatch batch) {
+		sprite.setFlip(getSpeed().x < 0, false);
 		sprite.setBounds(getRectangle().x, getRectangle().y, getRectangle().width, getRectangle().height);
 		sprite.draw(batch);
+	}
+
+	public int getBulletStrength() {
+		return bulletStrength;
 	}
 	
 }
