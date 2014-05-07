@@ -1,42 +1,78 @@
 package com.madpanda.metalslug.screens.game.scene;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.madpanda.metalslug.screens.game.Entity;
-import com.madpanda.metalslug.screens.game.components.graphical.TextureRender;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.madpanda.metalslug.screens.game.components.physical.MovingBody;
+import com.madpanda.metalslug.screens.game.scene.character.Character;
 
-public class Bullet extends Entity {
+public class Bullet extends MovingBody {
 
 	private static final float WIDTH = 10, HEIGHT = 5;
 	
-	private boolean dead;
+	private Character shooter;
+	private Sprite sprite;
+	private boolean removed;
 	
 	/**
 	 * Creates a new bullet given its firing position and its speed.
+	 * @param shooter - The character that fired the bullet.
 	 * @param posX - The x component of the firing position.
 	 * @param posY - The y component of the firing position.
 	 * @param speed - The speed and direction of the bullet. Must be horizontal or vertical.
 	 */
-	public Bullet(float posX, float posY, Vector2 speed) {
-		Vector2 direction = speed.cpy().nor();
-		if(direction.equals(Vector2.Zero)) {
+	public Bullet(final Character shooter, float posX, float posY, Vector2 speed, Texture texture) {
+		super(calculateBounds(posX, posY, speed.cpy().nor()));
+		
+		this.shooter = shooter;
+		
+		if(speed.equals(Vector2.Zero)) {
 			throw new IllegalArgumentException("The speed cannot be zero.");
 		}
 		
-		if(direction.x != 0 && direction.y != 0) {
+		if(speed.x != 0 && speed.y != 0) {
 			throw new IllegalArgumentException("The direction of the speed cannot be diagonal.");
 		}
 		
-		Rectangle rect = calculateBounds(posX, posY, direction);
-		MovingBody physicalComponent = new MovingBody(this, rect);
-		physicalComponent.setSpeed(speed);
-		setUpdateComponent(physicalComponent);
+		Timer bulletTimer = new Timer();
+		bulletTimer.scheduleTask(new Task() {
+
+			@Override
+			public void run() {
+				remove();
+			}
+			
+		}, .5f);
 		
-		setGraphicalComponent(new TextureRender(this, rect, "images/game/blob/blob1.png"));
+		setSpeed(speed);
+		
+		sprite = new Sprite(texture);
 	}
 	
-	private Rectangle calculateBounds(float posX, float posY, Vector2 direction) {
+	public void remove() {
+		if(!removed) {
+			shooter.removeBullet(Bullet.this);
+			removed = true;
+		}
+	}
+	
+	public void update() {
+		super.update();
+		
+		for(Character character : Scene.getInstance().getCharacters()) {
+			if(shooter != character) {
+				if(getRectangle().overlaps(character.getRectangle())) {
+					character.hit(this);
+				}
+			}
+		}
+	}
+	
+	private static Rectangle calculateBounds(float posX, float posY, Vector2 direction) {
 		Rectangle rect = new Rectangle(posX, posY, WIDTH, HEIGHT);
 		
 		//if shooting vertically, rotate the bullet 90 degrees.
@@ -61,12 +97,9 @@ public class Bullet extends Entity {
 		return rect;
 	}
 
-	public void die() {
-		dead = true;
-	}
-	
-	public boolean dead() {
-		return dead;
+	public void render(SpriteBatch batch) {
+		sprite.setBounds(getRectangle().x, getRectangle().y, getRectangle().width, getRectangle().height);
+		sprite.draw(batch);
 	}
 	
 }

@@ -3,7 +3,6 @@ package com.madpanda.metalslug.screens.game.components.physical;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.madpanda.metalslug.screens.game.Entity;
 
 /**
  * A body that can change position given a speed and an acceleration.
@@ -18,8 +17,8 @@ public class MovingBody extends Body {
 	 * @param entity - The containing entity
 	 * @param rectangle - The bounds of the body.
 	 */
-	public MovingBody(Entity entity, Rectangle rectangle) {
-		super(entity, rectangle);
+	public MovingBody(Rectangle rectangle) {
+		super(rectangle);
 		speed = new Vector2(); //initializes to zero vector
 		acceleration = new Vector2(); //initializes to zero vector
 	}

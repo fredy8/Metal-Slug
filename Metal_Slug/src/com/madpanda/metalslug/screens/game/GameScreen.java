@@ -30,26 +30,28 @@ public class GameScreen extends AbstractScreen {
 
 	@Override
 	public void update() {
-		currentScene.getInputComponent().keyDownCheck();
-		currentScene.getPhysicalComponent().update(); //updates the game
 		currentScene.update();
 	}
 	
 	@Override
 	public void render(SpriteBatch batch) {
-		currentScene.getGraphicalComponent().render(batch); //renders the game
+		currentScene.render(batch); //renders the game
+		GameUI.render();
 	}
 	
-	@Override
-	public void renderShapes() {
-		currentScene.getGraphicalComponent().renderShapes(); //renders the game shapes
-	}
-	
+	/**
+	 * Sets the scene of the game to the one given.
+	 * @param scene - the new scene.
+	 */
 	public void setScene(Scene scene) {
 		currentScene = scene;
-		Gdx.input.setInputProcessor(currentScene.getInputComponent()); //sets the input of the screen to the game
+		Gdx.input.setInputProcessor(currentScene); //sets the input of the screen to the game
 	}
 	
+	/**
+	 * Returns the current instance of the game.
+	 * @return the current gamescreen instance.
+	 */
 	public static GameScreen getInstance() {
 		return instance;
 	}

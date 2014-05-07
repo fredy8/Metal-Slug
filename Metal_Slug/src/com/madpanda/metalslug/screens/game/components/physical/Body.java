@@ -1,12 +1,11 @@
 package com.madpanda.metalslug.screens.game.components.physical;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.madpanda.metalslug.screens.game.Entity;
 
 /**
  * A physical body defined by and Axis Aligned Bounding Box.
  */
-public class Body extends UpdateComponent {
+public class Body {
 
 	private Rectangle rectangle; //The bounds of the body
 	
@@ -15,8 +14,7 @@ public class Body extends UpdateComponent {
 	 * @param entity - The containing entity.
 	 * @param rectangle - The bounds of the body.
 	 */
-	public Body(Entity entity, Rectangle rectangle) {
-		super(entity);
+	public Body(Rectangle rectangle) {
 		this.rectangle = rectangle;
 	}
 	
@@ -27,5 +25,7 @@ public class Body extends UpdateComponent {
 	public Rectangle getRectangle() {
 		return rectangle;
 	}
+	
+	public void update() { }
 	
 }
